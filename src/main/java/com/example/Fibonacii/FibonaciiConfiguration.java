@@ -23,4 +23,13 @@ public class FibonaciiConfiguration extends Configuration {
     public void setDatabaseConfiguration(DatabaseConfiguration databaseConfiguration) {
         this.databaseConfiguration = databaseConfiguration;
     }
+    @Valid
+    @NotNull
+    @JsonProperty
+    private RedisConfiguration redis = new RedisConfiguration();
+
+    public RedisConfiguration getRedis()
+    {
+        return redis;
+    }
 }

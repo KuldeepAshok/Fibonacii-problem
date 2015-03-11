@@ -1,6 +1,7 @@
 package com.example.Fibonacii;
 
 import com.example.Fibonacii.resources.Fibonacii;
+import com.hubspot.dropwizard.guice.GuiceBundle;
 import com.yammer.dropwizard.Service;
 import com.yammer.dropwizard.assets.AssetsBundle;
 import com.yammer.dropwizard.auth.basic.BasicAuthProvider;
@@ -16,8 +17,13 @@ public class FibonaciiService extends Service<FibonaciiConfiguration> {
     }
     @Override
     public void initialize(Bootstrap<FibonaciiConfiguration> bootstrap) {
-        bootstrap.setName("hello-world");
+        bootstrap.setName("FibonaciiRedis");
         bootstrap.addBundle(new AssetsBundle());
+        bootstrap.addBundle(GuiceBundle.newBuilder()
+                        .addModule(new ApplicationModule())
+                        .enableAutoConfig(getClass().getPackage().getName())
+                        .build()
+        );
         bootstrap.addBundle(new MigrationsBundle<FibonaciiConfiguration>() {
             @Override
             public DatabaseConfiguration getDatabaseConfiguration(FibonaciiConfiguration configuration) {
@@ -28,7 +34,5 @@ public class FibonaciiService extends Service<FibonaciiConfiguration> {
     @Override
     public void run(FibonaciiConfiguration configuration,
                     Environment environment) throws ClassNotFoundException {
-
-        environment.addResource(new Fibonacii());
     }
 }
